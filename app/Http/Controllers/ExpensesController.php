@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Validator;
 
 class ExpensesController extends Controller
 {
@@ -27,7 +28,7 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -38,7 +39,16 @@ class ExpensesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+        if($validate->fails()){
+            return [
+                "error"=> $validate->errors()->all()
+            ];
+        }else{
+            Expense::create($request->all());
+        }
     }
 
     /**
