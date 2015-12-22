@@ -16,3 +16,9 @@ Route::get('/', function () {
 });
 
 Route::resource('expense', 'ExpensesController');
+
+Route::resource('trackedexpense', 'TrackedExpensesController');
+
+Route::get('test', function(){
+        return \App\TrackedExpenses::with('expense')->get();
+});

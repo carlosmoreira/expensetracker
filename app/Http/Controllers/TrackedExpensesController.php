@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Expense;
+use App\TrackedExpenses;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
-class ExpensesController extends Controller
+class TrackedExpensesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class ExpensesController extends Controller
      */
     public function index()
     {
-       return Expense::all();
+        return TrackedExpenses::paginate(25);
     }
 
     /**
@@ -28,7 +28,7 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -39,15 +39,19 @@ class ExpensesController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required'
-        ]);
+        $validate = \Validator::make(
+            $request->all(),
+            ['expense_id'=> 'required',
+            'cost' => 'required|Integer' ]
+        );
         if($validate->fails()){
-            return [
-                "error"=> $validate->errors()->all()
-            ];
+            return ['Error' => $validate->errors()->all()];
         }else{
-            Expense::create($request->all());
+            $te = new TrackedExpenses();
+            $te->expense_id = $request->get('expense_id');
+            $te->cost = $request->get('cost');
+            $te->save();
+            return ['Success' => 'Ok'];
         }
     }
 
@@ -82,10 +86,7 @@ class ExpensesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $expense = Expense::findOrFail($id);
-        $expense->fill($request->all);
-        $expense->save();
-        return ['Success' => 'ok', 'Expense' => $expense];
+        //
     }
 
     /**
