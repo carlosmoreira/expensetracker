@@ -19,6 +19,10 @@ Route::resource('expense', 'ExpensesController');
 
 Route::resource('trackedexpense', 'TrackedExpensesController');
 
+Route::group(['prefix'=>'pages'], function(){
+    Route::get('/monthlyexpenses', 'PagesController@monthlyExpenses');
+});
+
 Route::get('test', function(){
         return \App\TrackedExpenses::with('expense')->get();
 });
