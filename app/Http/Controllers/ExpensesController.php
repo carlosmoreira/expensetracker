@@ -18,7 +18,7 @@ class ExpensesController extends Controller
      */
     public function index()
     {
-       return Expense::all();
+        return Expense::all();
     }
 
     /**
@@ -34,7 +34,7 @@ class ExpensesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -42,11 +42,11 @@ class ExpensesController extends Controller
         $validate = Validator::make($request->all(), [
             'name' => 'required'
         ]);
-        if($validate->fails()){
+        if ($validate->fails()) {
             return [
-                "error"=> $validate->errors()->all()
+                "error" => $validate->errors()->all()
             ];
-        }else{
+        } else {
             Expense::create($request->all());
         }
     }
@@ -54,7 +54,7 @@ class ExpensesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -65,7 +65,7 @@ class ExpensesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -76,22 +76,23 @@ class ExpensesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $expense = Expense::findOrFail($id);
-        $expense->fill($request->all);
+        $expense->fill($request->all());
         $expense->save();
-        return ['Success' => 'ok', 'Expense' => $expense];
+
+        //return ['Success' => 'ok', 'Expense' => $expense];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

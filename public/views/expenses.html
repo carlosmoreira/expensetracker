@@ -1,0 +1,36 @@
+<div ng-init="init()">
+    <h2>Expenses</h2>
+    <table class="table">
+        <tr>
+            <th>Expense</th>
+            <th>Actions</th>
+        </tr>
+        <tr ng-repeat="expense in expenses">
+            <td ng-show="!expense.editable">{{expense.name}}</td>
+            <td ng-show="expense.editable">
+                <input type="text" class="form-control" ng-model="expense.name"/>
+            </td>
+            <td>
+                <i
+                        ng-show="!expense.editable"
+                        ng-click="editExpense(expense)"
+                        class="fa fa-2x fa-pencil-square-o"></i>
+
+                <i
+                        ng-show="expense.editable"
+                        ng-click="update(expense)"
+                        class="fa fa-2x fa-check"></i>
+
+                <i
+                        ng-show="expense.active"
+                        ng-click="updateActive(expense)"
+                        class="fa fa-2x fa-check-square-o"></i>
+
+                <i
+                        ng-show="!expense.active"
+                        ng-click="updateActive(expense)"
+                        class="fa fa-2x fa-square-o"></i>
+            </td>
+        </tr>
+    </table>
+</div>

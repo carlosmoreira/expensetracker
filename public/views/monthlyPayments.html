@@ -1,0 +1,36 @@
+<h2>{{month}} Payments</h2>
+<table class="table" ng-show="!error">
+    <tr>
+        <th>Expense</th>
+        <th>Cost</th>
+    </tr>
+    <tr ng-repeat="expense in expenses">
+        <td width="30%">{{expense.expense.name}}</td>
+        <td ng-if="expense.monthlypayed" width="30%">
+            {{expense.monthlypayed.cost | currency}}
+        </td>
+
+        <td ng-if="!expense.monthlypayed" width="20%">
+
+            <div class="input-group">
+                <span class="input-group-addon" id="sizing-addon1">$</span>
+                <input ng-model="expense.cost" type="text" class="form-control" placeholder="0.00">
+                <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" ng-disabled="!expense.cost" ng-click="saveMonthlyExpense(expense)">Save!</button>
+                </span>
+            </div><!-- /input-group -->
+        </td>
+        <td>
+
+            <i ng-if="expense.monthlypayed" class="glyphicon glyphicon-edit" ng-click="editMonthlyExpense(expense)"></i>
+        </td>
+    </tr>
+    <tr class="success">
+        <th>Total:</th>
+        <th>{{monthTotal() | currency }}</th>
+    </tr>
+</table>
+<ul ng-if="errors" ng-repeat="err in errors">
+    <li>{{err}}</li>
+</ul>
+<h3 ng-if="error" class="error alert alert-danger">{{error}}</h3>

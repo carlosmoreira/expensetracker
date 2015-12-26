@@ -42,11 +42,17 @@ class TrackedExpensesController extends Controller
         $validate = \Validator::make(
             $request->all(),
             ['expense_id'=> 'required',
-            'cost' => 'required|Integer' ]
+            'cost' => 'required' ]
         );
         if($validate->fails()){
             return ['Error' => $validate->errors()->all()];
         }else{
+            //Remove all with current month
+            if($request->has('trackedExpenseId')){
+                $te = TrackedExpenses::findOrFail($request->get('trackedExpenseId'));
+                $te->delete();
+            }
+
             $te = new TrackedExpenses();
             $te->expense_id = $request->get('expense_id');
             $te->cost = $request->get('cost');

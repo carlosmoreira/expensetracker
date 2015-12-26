@@ -25,27 +25,28 @@ class PagesController extends Controller
 
     public function monthlyExpenses(){
 
-        $expenses = Expense::all();
+        $expenses = Expense::where('active' , 1)->get();
 
-        $currentMonthTrackedExpenses = TrackedExpenses::where('created_at', '>=', Carbon::now()->startOfMonth())->get();
+        $currentMonthTrackedExpenses = TrackedExpenses::where('created_at', '>=', Carbon::now()->startOfMonth())->orderBy('id' , 'desc' )->get();
 
         $e = [];
         $current = 0;
         foreach($expenses as $expense){
             //var_dump($expense->id);
+
             $e[$current]['expense'] = $expense;
             $e[$current]['monthlypayed'] = $this->findExpense($expense->id, $currentMonthTrackedExpenses);
             $current++;
+}
 
-        }
+        return ['month' => Date('F'),
+                    'payments' => $e
+        ];
 
-
-        return $e;
-
-        return Expense::LeftJoin('TrackedExpenses', 'Expenses.id', '=' , 'TrackedExpenses.expense_id')
-                ->where('TrackedExpenses.created_at', '>=', Carbon::now()
-                ->startOfMonth())
-                ->get();
+//        return Expense::LeftJoin('TrackedExpenses', 'Expenses.id', '=' , 'TrackedExpenses.expense_id')
+//                ->where('TrackedExpenses.created_at', '>=', Carbon::now()
+//                ->startOfMonth())
+//                ->get();
     }
 
 }
