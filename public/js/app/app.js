@@ -5,15 +5,22 @@ expenseApp.config(function ($routeProvider, $locationProvider) {
         .when('/payments', {
             templateUrl: 'views/monthlyPayments.html',
             controller: 'PaymentsController'
-        }).when('/expenses', {
-        templateUrl: 'views/expenses.html',
-        controller: 'ExpensesController'
-    }).otherwise('/payments')
+        })
+        .when('/payments/:month', {
+            templateUrl: 'views/monthlyPayments.html',
+            controller: 'PaymentsController'
+        })
+        .when('/expenses', {
+            templateUrl: 'views/expenses.html',
+            controller: 'ExpensesController'
+        })
+        .when('/expenses/monthly', {
+            templateUrl: 'views/totalmonthlyexpenses.html',
+            controller: 'ExpensesController'
+        }).otherwise('/payments');
 
-    ;
-
-    // configure html5 to get links working on jsfiddle
-    //$locationProvider.html5Mode(true);
+        // configure html5 to get links working on jsfiddle
+        //$locationProvider.html5Mode(true);
 });
 
 expenseApp.controller('MainController', function ($scope, $http) {
@@ -21,9 +28,12 @@ expenseApp.controller('MainController', function ($scope, $http) {
 });
 
 
-expenseApp.controller('PaymentsController', function ($scope, $http) {
+expenseApp.controller('PaymentsController', function ($scope, $http, $routeParams) {
     var loadData = function () {
-        $http.get('/pages/monthlyexpenses').then(function (resp) {
+
+        var url = '/pages/monthlyexpenses' + (($routeParams.month) ? '/' + $routeParams.month : '');
+
+        $http.get(url).then(function (resp) {
             $scope.expenses = resp.data.payments;
             $scope.month = resp.data.month;
             console.log(resp.data);
@@ -53,7 +63,12 @@ expenseApp.controller('PaymentsController', function ($scope, $http) {
 
         expense.expense_id = expense.expense.id;
 
+        if($routeParams.month){
+            expense.month = $routeParams.month;
+        }
+
         $http.post('/trackedexpense', expense).then(function (resp) {
+
 
             if(resp.data.Error){
                 $scope.errors = resp.data.Error;
@@ -98,7 +113,7 @@ expenseApp.controller('ExpensesController', function ($scope, $http) {
                 loadData();
             }, function (err) {
                 console.log(err);
-            })
+            });
         }
         expense.editable = false;
     }
@@ -111,6 +126,25 @@ expenseApp.controller('ExpensesController', function ($scope, $http) {
         }, function (err) {
             console.log(err);
         })
+    }
+
+    $scope.loadTME = function(){
+        $http.get('/pages/totalmonthlyexpenses').then(function (resp) {
+            console.log(resp);
+            $scope.totalMonthly = resp.data;
+        }, function (err) {
+            console.log(err);
+        });
+    };
+
+    $scope.tmeTotal = function(){
+        var total = 0;
+        angular.forEach($scope.totalMonthly, function(val, key){
+            if(val.Total){
+                total += val.Total;
+            }
+        });
+        return total;
     }
 
 });

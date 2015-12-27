@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Expense;
 use App\TrackedExpenses;
+use DB;
+use Faker\Provider\cs_CZ\DateTime;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -23,11 +25,30 @@ class PagesController extends Controller
         return null;
     }
 
-    public function monthlyExpenses(){
+    public function monthlyExpenses(Request $request, $month = null){
+
+        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        $otherMonth = isset($month) && ($month > 0 && $month < 13) ;
+
+        if($otherMonth){
+            //Get a Specific Months Data
+            $monthStart =  Carbon::create(date('Y'), $month, 1,0,0,0);
+            $monthEnd = Carbon::create(date('Y'), $month, 1,0,0,0)->endOfMonth();
+
+            $currentMonthTrackedExpenses = TrackedExpenses::where('created_at', '>=', $monthStart)
+                ->where('created_at' , '<=' ,  $monthEnd)
+                ->orderBy('id' , 'desc' )->get();
+
+        }else{
+            //Get current Months Data
+            $currentMonthTrackedExpenses = TrackedExpenses::where('created_at', '>=', Carbon::now()->startOfMonth())
+                ->where('created_at' , '<=' ,  Carbon::now()->endOfMonth())
+                ->orderBy('id' , 'desc' )->get();
+        }
+
 
         $expenses = Expense::where('active' , 1)->get();
-
-        $currentMonthTrackedExpenses = TrackedExpenses::where('created_at', '>=', Carbon::now()->startOfMonth())->orderBy('id' , 'desc' )->get();
 
         $e = [];
         $current = 0;
@@ -37,16 +58,16 @@ class PagesController extends Controller
             $e[$current]['expense'] = $expense;
             $e[$current]['monthlypayed'] = $this->findExpense($expense->id, $currentMonthTrackedExpenses);
             $current++;
-}
+        }
 
-        return ['month' => Date('F'),
-                    'payments' => $e
+        return ['month' =>  ($otherMonth) ? $months[$month - 1] : Date('F') ,
+            'payments' => $e,
+            'year' => date('Y')
         ];
 
-//        return Expense::LeftJoin('TrackedExpenses', 'Expenses.id', '=' , 'TrackedExpenses.expense_id')
-//                ->where('TrackedExpenses.created_at', '>=', Carbon::now()
-//                ->startOfMonth())
-//                ->get();
     }
 
+    public function totalMonthlyExpenses(){
+        return DB::select('select sum(cost) as Total, DATE_FORMAT( created_at , \'%M\') as Month  from trackedexpenses where MONTH(created_at) in(1,2,3,4,5,6,7,8,9,10,11,12) group by MONTH(created_at)');
+    }
 }

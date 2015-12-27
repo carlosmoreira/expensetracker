@@ -50,14 +50,29 @@ class TrackedExpensesController extends Controller
             //Remove all with current month
             if($request->has('trackedExpenseId')){
                 $te = TrackedExpenses::findOrFail($request->get('trackedExpenseId'));
-                $te->delete();
+                if($te){
+                    $te->fill($request->all());
+                    $te->save();
+                    return ['Success' => 'Ok'];
+                }
             }
 
             $te = new TrackedExpenses();
+            if($request->has('month')){
+                //$date = \DateTime::createFromFormat( 'Y-m-d' , date('Y') . '-' . $request->get('month') . '00 00:00:00');
+                //var_dump($date->getTimestamp());
+
+                $date = '2015-0'.($request->get('month') + 1).'-00 00:00:00';
+
+
+
+                $te->created_at = $date;
+
+            }
             $te->expense_id = $request->get('expense_id');
             $te->cost = $request->get('cost');
             $te->save();
-            return ['Success' => 'Ok'];
+            return ['Success' => 'Ok', 'id' => $te->id];
         }
     }
 
@@ -92,7 +107,10 @@ class TrackedExpensesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $te = TrackedExpenses::findOrFail($id);
+        $te->fill($request->all());
+        $te->save();
+
     }
 
     /**

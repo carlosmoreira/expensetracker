@@ -1,0 +1,18 @@
+<div ng-init="loadTME()">
+    <h2>Total Monthly</h2>
+
+    <table class="table">
+        <tr>
+            <th>Month</th>
+            <th>Cost</th>
+        </tr>
+        <tr ng-repeat="tm in totalMonthly">
+            <td><a href="#/payments/{{$index + 1}}">{{tm.Month}}</a></td>
+            <td>{{tm.Total | currency}}</td>
+        </tr>
+        <tr class="success">
+            <th>Total:</th>
+            <th>{{tmeTotal() | currency}}</th>
+        </tr>
+    </table>
+</div>

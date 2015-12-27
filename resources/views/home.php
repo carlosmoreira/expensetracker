@@ -137,11 +137,14 @@
                         </div>
                         <!-- /input-group -->
                     </li>
+                    <li>
+                        <a href="#/expenses"><i class="fa fa-dashboard fa-fw"></i> Expenses</a>
+                    </li>
                     <li class="active">
                         <a href="#/payments"><i class="fa fa-dashboard fa-fw"></i> Monthly Payments</a>
                     </li>
                     <li>
-                        <a href="#/expenses"><i class="fa fa-dashboard fa-fw"></i> Expenses</a>
+                        <a href="#/expenses/monthly"><i class="fa fa-dashboard fa-fw"></i>Total Monthly Expenses</a>
                     </li>
                 </ul>
             </div>
