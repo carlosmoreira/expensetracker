@@ -67,7 +67,23 @@ class PagesController extends Controller
 
     }
 
-    public function totalMonthlyExpenses(){
-        return DB::select('select sum(cost) as Total, DATE_FORMAT( created_at , \'%M\') as Month  from trackedexpenses where MONTH(created_at) in(1,2,3,4,5,6,7,8,9,10,11,12) group by MONTH(created_at)');
+    public function totalMonthlyExpenses(Request $request, $expenseId = null){
+
+        $query = "select sum(cost) as Total, DATE_FORMAT( created_at , \"%M\") as Month
+                            from trackedexpenses
+                            where MONTH(created_at) in(1,2,3,4,5,6,7,8,9,10,11,12)
+                            ";
+
+        if(isset($expenseId)){
+            $query .= "AND trackedexpenses.expense_id = ".$expenseId;
+        }
+
+        $query .= " group by MONTH(created_at)";
+
+        return [
+            'totalMonthly' => DB::select( $query ),
+            'expenses' => Expense::all(['name', 'id'])
+        ];
+
     }
 }

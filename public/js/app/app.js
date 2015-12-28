@@ -41,6 +41,9 @@ expenseApp.controller('PaymentsController', function ($scope, $http, $routeParam
             console.log(resp);
             $scope.error = resp.statusText;
         });
+
+
+
     };
 
     loadData();
@@ -89,6 +92,9 @@ expenseApp.controller('PaymentsController', function ($scope, $http, $routeParam
 });
 
 expenseApp.controller('ExpensesController', function ($scope, $http) {
+
+    var mb = null;
+
     var loadData = function () {
         $http.get('/expense').then(function (resp) {
             //console.log(resp);
@@ -96,10 +102,15 @@ expenseApp.controller('ExpensesController', function ($scope, $http) {
         }, function (err) {
             console.log(err);
         });
+
+
     }
+
+
     $scope.init = function () {
         loadData();
     }
+
 
     $scope.editExpense = function (expense) {
         expense.name_copy = expense.name;
@@ -128,14 +139,49 @@ expenseApp.controller('ExpensesController', function ($scope, $http) {
         })
     }
 
-    $scope.loadTME = function(){
-        $http.get('/pages/totalmonthlyexpenses').then(function (resp) {
+
+    $scope.loadTME = function(id){
+
+        var url = '/pages/totalmonthlyexpenses/';
+
+        if(id){
+            url += id;
+        }
+
+        console.log(url);
+
+        $http.get( url ).then(function (resp) {
             console.log(resp);
-            $scope.totalMonthly = resp.data;
+            $scope.totalMonthly = resp.data.totalMonthly;
+            $scope.expenses = resp.data.expenses;
+
+            if(!mb){
+                mb = Morris.Bar({
+                    element: 'morris-bar-chart',
+                    data: resp.data.totalMonthly,
+                    xkey: 'Month',
+                    ykeys: ['Total'],
+                    labels: ['Total'],
+                    hideHover: 'auto',
+                    resize: true
+                });
+            }else{
+                mb.setData(resp.data.totalMonthly);
+            }
+
+
+
         }, function (err) {
             console.log(err);
         });
+
+
     };
+
+    $scope.updateData = function () {
+        console.log( $scope.setExpense );
+        $scope.loadTME( $scope.setExpense );
+    }
 
     $scope.tmeTotal = function(){
         var total = 0;
@@ -145,6 +191,13 @@ expenseApp.controller('ExpensesController', function ($scope, $http) {
             }
         });
         return total;
+    }
+
+    $scope.createExpense = function(){
+        $http.post('/expense', $scope.newExpense).then(function(resp){
+            console.log(resp);
+            loadData();
+        }, function(err){console.log(err);})
     }
 
 });

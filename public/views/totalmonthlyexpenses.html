@@ -1,7 +1,13 @@
 <div ng-init="loadTME()">
     <h2>Total Monthly</h2>
+    <select class="form-control" name="" id="" ng-change="updateData()" ng-model="setExpense">
+        <option value="">Total</option>
+        <option ng-repeat="expense in expenses" value="{{expense.id}}">{{expense.name}}</option>
+    </select>
 
-    <table class="table">
+    <br>
+
+    <table class="table table-bordered table-striped">
         <tr>
             <th>Month</th>
             <th>Cost</th>
@@ -16,3 +22,20 @@
         </tr>
     </table>
 </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-3">Data</div>
+            <div class="col-md-8"></div>
+        </div>
+
+
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+        <div id="morris-bar-chart"></div>
+    </div>
+    <!-- /.panel-body -->
+</div>
+<!-- /.panel -->

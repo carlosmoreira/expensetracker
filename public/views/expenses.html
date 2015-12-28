@@ -1,12 +1,30 @@
+<style>
+    .strikethrough{
+        text-decoration: line-through;
+    }
+</style>
 <div ng-init="init()">
-    <h2>Expenses</h2>
+    <h2>Expenses <i ng-show="!showNewExpense" ng-click="showNewExpense=true" class="glyphicon glyphicon-plus"></i></h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form ng-show="showNewExpense" ng-submit="createExpense()">
+                <div class="input-group">
+                    <input ng-model="newExpense.name" type="text" class="form-control" placeholder="Enter Expense Name">
+                <span class="input-group-btn">
+                    <input  class="btn btn-success" type="submit" ng-disabled="!newExpense" ng-click="" disabled="disabled">Create!</input>
+                </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
     <table class="table">
         <tr>
             <th>Expense</th>
             <th>Actions</th>
         </tr>
-        <tr ng-repeat="expense in expenses">
-            <td ng-show="!expense.editable">{{expense.name}}</td>
+        <tr ng-repeat="expense in expenses | orderBy:'-active'">
+            <td ng-class="{strikethrough : !expense.active}" ng-show="!expense.editable">{{expense.name}}</td>
             <td ng-show="expense.editable">
                 <input type="text" class="form-control" ng-model="expense.name"/>
             </td>

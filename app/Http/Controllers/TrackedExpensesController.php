@@ -39,6 +39,8 @@ class TrackedExpensesController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $validate = \Validator::make(
             $request->all(),
             ['expense_id'=> 'required',
@@ -58,16 +60,9 @@ class TrackedExpensesController extends Controller
             }
 
             $te = new TrackedExpenses();
-            if($request->has('month')){
-                //$date = \DateTime::createFromFormat( 'Y-m-d' , date('Y') . '-' . $request->get('month') . '00 00:00:00');
-                //var_dump($date->getTimestamp());
-
-                $date = '2015-0'.($request->get('month') + 1).'-00 00:00:00';
-
-
-
-                $te->created_at = $date;
-
+            if($request->has('month')){ //Data For a Specific Month
+                $date = new \DateTime($request->get('month')."/01/" . date('Y'));
+                $te->created_at = date_format($date, 'Y-m-d H:i:s');
             }
             $te->expense_id = $request->get('expense_id');
             $te->cost = $request->get('cost');

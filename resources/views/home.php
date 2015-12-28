@@ -29,6 +29,7 @@
     <![endif]-->
     <script src="/libs/angular/angular.min.js"></script>
     <script src="/libs/angular-route/angular-route.min.js"></script>
+
 </head>
 <body ng-controller="MainController">
 
@@ -126,22 +127,23 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                        </div>
-                        <!-- /input-group -->
+                    <li class="">
+                        <h3 class="text-capitalize text-center">Tracker</h3>
+<!--                        <div class="input-group custom-search-form">-->
+<!--                            <input type="text" class="form-control" placeholder="Search...">-->
+<!--                                    <span class="input-group-btn">-->
+<!--                                        <button class="btn btn-default" type="button">-->
+<!--                                            <i class="fa fa-search"></i>-->
+<!--                                        </button>-->
+<!--                                    </span>-->
+<!--                        </div>-->
+<!--                        <!-- /input-group -->
                     </li>
                     <li>
                         <a href="#/expenses"><i class="fa fa-dashboard fa-fw"></i> Expenses</a>
                     </li>
                     <li class="active">
-                        <a href="#/payments"><i class="fa fa-dashboard fa-fw"></i> Monthly Payments</a>
+                        <a href="#/payments"><i class="fa fa-dashboard fa-fw"></i> Current Month Payments</a>
                     </li>
                     <li>
                         <a href="#/expenses/monthly"><i class="fa fa-dashboard fa-fw"></i>Total Monthly Expenses</a>
@@ -174,6 +176,11 @@
 
 <!-- jQuery -->
 <script src="../js/jquery.min.js"></script>
+
+<script src="/js/raphael.min.js"></script>
+
+<!-- Morris Charts-->
+<script src="js/morris.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="../js/bootstrap.min.js"></script>

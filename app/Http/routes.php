@@ -29,7 +29,7 @@ Route::group(['prefix'=>'pages'], function(){
     Route::get('/monthlyexpenses/{month}', 'PagesController@monthlyExpenses');
 
     Route::get('/totalmonthlyexpenses', 'PagesController@totalMonthlyExpenses');
-
+    Route::get('/totalmonthlyexpenses/{expenseId}', 'PagesController@totalMonthlyExpenses');
 });
 
 Route::get('test', function(){
