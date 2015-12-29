@@ -48,6 +48,16 @@ expenseApp.controller('PaymentsController', function ($scope, $http, $routeParam
 
     loadData();
 
+    $scope.lastMonthTotal = function(){
+        var total = 0;
+        angular.forEach($scope.expenses, function(val, key){
+            if(val.lastMonthCost){
+                total += val.lastMonthCost;
+            }
+        });
+        return total;
+    }
+
     $scope.monthTotal = function(){
         var total = 0;
         angular.forEach($scope.expenses, function(val, key){

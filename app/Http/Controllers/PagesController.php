@@ -25,38 +25,57 @@ class PagesController extends Controller
         return null;
     }
 
+    private function findExpenseLastMonth($id, $lastMonthData){
+        foreach($lastMonthData as $d){
+            if($id == $d['expense_id']){
+                return $d['cost'];
+            }
+        }
+        return null;
+    }
+
     public function monthlyExpenses(Request $request, $month = null){
+
 
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
         $otherMonth = isset($month) && ($month > 0 && $month < 13) ;
+
+        $currentMonthTrackedExpenses = TrackedExpenses::query();
 
         if($otherMonth){
             //Get a Specific Months Data
             $monthStart =  Carbon::create(date('Y'), $month, 1,0,0,0);
             $monthEnd = Carbon::create(date('Y'), $month, 1,0,0,0)->endOfMonth();
 
-            $currentMonthTrackedExpenses = TrackedExpenses::where('created_at', '>=', $monthStart)
-                ->where('created_at' , '<=' ,  $monthEnd)
-                ->orderBy('id' , 'desc' )->get();
+            $currentMonthTrackedExpenses = $currentMonthTrackedExpenses->where('created_at', '>=', $monthStart)
+                ->where('created_at' , '<=' ,  $monthEnd);
 
+
+
+            $lastMonthData = TrackedExpenses::where('created_at', '>=' , $monthStart->previous()->startOfMonth())
+                ->where('created_at', '<=' ,$monthEnd->previous()->lastOfMonth() )->orderBy('id', 'asc')->get()->toArray();
         }else{
             //Get current Months Data
-            $currentMonthTrackedExpenses = TrackedExpenses::where('created_at', '>=', Carbon::now()->startOfMonth())
-                ->where('created_at' , '<=' ,  Carbon::now()->endOfMonth())
-                ->orderBy('id' , 'desc' )->get();
+            $currentMonthTrackedExpenses = $currentMonthTrackedExpenses->where('created_at', '>=', Carbon::now()->startOfMonth())
+                ->where('created_at' , '<=' ,  Carbon::now()->endOfMonth());
+
+            $lastMonthData = TrackedExpenses::where('created_at', '>=' , Carbon::now()->startOfMonth()->previous()->firstOfMonth())
+                ->where('created_at', '<=' , Carbon::now()->startOfMonth()->previous()->lastOfMonth())->get()->toArray();
+
         }
 
+        //$lastMonthData = $lastMonthData->orderBy('id','desc')->get()->toArray();
+
+        $currentMonthTrackedExpenses = $currentMonthTrackedExpenses->orderBy('id' , 'desc' )->get();
 
         $expenses = Expense::where('active' , 1)->get();
 
-        $e = [];
         $current = 0;
         foreach($expenses as $expense){
-            //var_dump($expense->id);
-
             $e[$current]['expense'] = $expense;
             $e[$current]['monthlypayed'] = $this->findExpense($expense->id, $currentMonthTrackedExpenses);
+            $e[$current]['lastMonthCost'] = $this->findExpenseLastMonth($expense->id, $lastMonthData);
             $current++;
         }
 
