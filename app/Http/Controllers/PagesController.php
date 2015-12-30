@@ -51,10 +51,22 @@ class PagesController extends Controller
             $currentMonthTrackedExpenses = $currentMonthTrackedExpenses->where('created_at', '>=', $monthStart)
                 ->where('created_at' , '<=' ,  $monthEnd);
 
+            if($month == 1){
 
+                $monthStart = clone $monthStart;
+                $monthStart->previous()->startOfMonth();
 
-            $lastMonthData = TrackedExpenses::where('created_at', '>=' , $monthStart->previous()->startOfMonth())
-                ->where('created_at', '<=' ,$monthEnd->previous()->lastOfMonth() )->orderBy('id', 'asc')->get()->toArray();
+                $monthEnd = clone $monthEnd;
+                $monthEnd = $monthEnd->firstOfMonth()->previous()->endOfMonth();
+
+            }else{
+                $monthStart =  $monthStart->previous()->startOfMonth();
+                $monthEnd   =   $monthEnd->previous()->lastOfMonth();
+
+            }
+
+            $lastMonthData = TrackedExpenses::where('created_at', '>=' , $monthStart)
+                ->where('created_at', '<=' , $monthEnd)->orderBy('id', 'asc')->get()->toArray();
         }else{
             //Get current Months Data
             $currentMonthTrackedExpenses = $currentMonthTrackedExpenses->where('created_at', '>=', Carbon::now()->startOfMonth())

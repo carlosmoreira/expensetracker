@@ -13,6 +13,9 @@
                 <span class="input-group-btn">
                     <input  class="btn btn-success" type="submit" ng-disabled="!newExpense" ng-click="" disabled="disabled">Create!</input>
                 </span>
+                <span class="input-group-btn">
+                    <button  class="btn btn-danger" type="button" ng-click="showNewExpense=false">Close</button>
+                </span>
                 </div>
             </form>
         </div>
@@ -42,7 +45,7 @@
                 <i
                         ng-show="expense.active"
                         ng-click="updateActive(expense)"
-                        class="fa fa-2x fa-check-square-o"></i>
+                        class="fa fa-2x fa-check-square-o lowGreen"></i>
 
                 <i
                         ng-show="!expense.active"

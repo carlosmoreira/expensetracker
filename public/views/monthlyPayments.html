@@ -7,8 +7,15 @@
     </tr>
     <tr ng-repeat="expense in expenses">
         <td width="30%">{{expense.expense.name}}</td>
-        <td>{{expense.lastMonthCost | currency}}</td>
-        <td ng-if="expense.monthlypayed" width="30%">
+        <td ng-class="{
+                'lowGreen' : expense.lastMonthCost < expense.monthlypayed.cost,
+                'highRed' : expense.monthlypayed.cost < expense.lastMonthCost
+                }" >{{expense.lastMonthCost | currency}}</td>
+        <td ng-class="{
+                'lowGreen' : expense.lastMonthCost > expense.monthlypayed.cost,
+                'highRed' : expense.monthlypayed.cost > expense.lastMonthCost
+                }"
+                ng-if="expense.monthlypayed" width="30%">
             {{expense.monthlypayed.cost | currency}}
         </td>
 
@@ -28,8 +35,8 @@
     </tr>
     <tr class="success">
         <th>Total:</th>
-        <th>{{lastMonthTotal() | currency}}</th>
-        <th>{{monthTotal() | currency }}</th>
+        <th ng-class=" { 'lowGreen' : lastMonthTotal() < monthTotal(), 'highRed' : lastMonthTotal() >  monthTotal() } "> {{lastMonthTotal() | currency}}</th>
+        <th ng-class=" { 'lowGreen' : monthTotal() < lastMonthTotal(), 'highRed' : monthTotal() > lastMonthTotal() } ">{{monthTotal() | currency }}</th>
     </tr>
 </table>
 <ul ng-if="errors" ng-repeat="err in errors">
