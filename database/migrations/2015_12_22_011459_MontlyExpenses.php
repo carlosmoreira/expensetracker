@@ -12,7 +12,7 @@ class MontlyExpenses extends Migration
      */
     public function up()
     {
-        Schema::create('TrackedExpenses', function (Blueprint $table) {
+        Schema::create('trackedexpenses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('expense_id');
             $table->double('cost');
@@ -27,6 +27,6 @@ class MontlyExpenses extends Migration
      */
     public function down()
     {
-        Schema::drop('TrackedExpenses');
+        Schema::drop('trackedexpenses');
     }
 }

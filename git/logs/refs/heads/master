@@ -1,0 +1,12 @@
+0000000000000000000000000000000000000000 055c7d02b389a15e9bdbf7010a2b521c58f31c9b Carlos Moreira <moreira.carlos09@gmail.com> 1450664461 -0500	commit (initial): first commit
+055c7d02b389a15e9bdbf7010a2b521c58f31c9b 46670f6094d907af6c9ff161dde4951c67684ef9 Carlos Moreira <moreira.carlos09@gmail.com> 1450667806 -0500	commit: Added Expenses Model and Seeding
+46670f6094d907af6c9ff161dde4951c67684ef9 4fc98c3885fccb44a4d673fa2f500085734305fa Carlos Moreira <moreira.carlos09@gmail.com> 1450746376 -0500	commit: empty
+4fc98c3885fccb44a4d673fa2f500085734305fa e700ea769b6557057495e975406e66077229eee3 Carlos Moreira <moreira.carlos09@gmail.com> 1450752926 -0500	commit (merge): Created TrackedExpenses and Relationship
+e700ea769b6557057495e975406e66077229eee3 82364fd7e0d48d5dfa6eabda879ce0ac54ebfc05 Carlos Moreira <moreira.carlos09@gmail.com> 1450840391 -0500	commit: Add Logic For to get all bills payed and not payed for current month
+82364fd7e0d48d5dfa6eabda879ce0ac54ebfc05 8c922ac2d157f2fea1a17bb019bf8becdd5eb798 Carlos Moreira <moreira.carlos09@gmail.com> 1450840704 -0500	commit: Added Empty template
+8c922ac2d157f2fea1a17bb019bf8becdd5eb798 1d3e20d0562ade4cebdd15617594893bbaaebce5 Carlos Moreira <moreira.carlos09@gmail.com> 1450843064 -0500	commit: Started First TEmplate page started Angular code
+1d3e20d0562ade4cebdd15617594893bbaaebce5 0a663a9bb30317e38f945a5c43f48105d2d86992 Carlos Moreira <moreira.carlos09@gmail.com> 1451107265 -0500	commit: Cool changes
+0a663a9bb30317e38f945a5c43f48105d2d86992 ec582cc672fa1c9e97a38720f4f6b54c29fc0c6f Carlos Moreira <moreira.carlos09@gmail.com> 1451194529 -0500	commit: Can now view past months bills as well as edit past months
+ec582cc672fa1c9e97a38720f4f6b54c29fc0c6f c6e83d4a92797d62e5a129dbbf24d6a973b9b6cb Carlos Moreira <moreira.carlos09@gmail.com> 1451263743 -0500	commit: create new expense types, added charts to total monthly
+c6e83d4a92797d62e5a129dbbf24d6a973b9b6cb 7e468aef050410ba6a2e8aef6e7a427496fd0f10 Carlos Moreira <moreira.carlos09@gmail.com> 1451358275 -0500	commit: start 'lastmonth' feature
+7e468aef050410ba6a2e8aef6e7a427496fd0f10 c9d31a775e737a7d43afa24b44a9738520dad404 Carlos Moreira <moreira.carlos09@gmail.com> 1451443395 -0500	commit: fixed bug when displaying past months
