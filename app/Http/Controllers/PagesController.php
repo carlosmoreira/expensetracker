@@ -77,6 +77,7 @@ class PagesController extends Controller
 
         }
 
+
         //$lastMonthData = $lastMonthData->orderBy('id','desc')->get()->toArray();
 
         $currentMonthTrackedExpenses = $currentMonthTrackedExpenses->orderBy('id' , 'desc' )->get();
@@ -100,16 +101,21 @@ class PagesController extends Controller
 
     public function totalMonthlyExpenses(Request $request, $expenseId = null){
 
-        $query = "select sum(cost) as Total, DATE_FORMAT( created_at , \"%M\") as Month
-                            from trackedexpenses
-                            where MONTH(created_at) in(1,2,3,4,5,6,7,8,9,10,11,12)
+        $query = "select sum(cost) as Total,
+                      DATE_FORMAT( created_at , \"%M\") as Month
+                      from trackedexpenses
+                      where MONTH(created_at) in(1,2,3,4,5,6,7,8,9,10,11,12)
                             ";
 
         if(isset($expenseId)){
             $query .= "AND trackedexpenses.expense_id = ".$expenseId;
         }
 
+        $query .= "and DATE_FORMAT( created_at , \"%Y\") = 2016";
+
         $query .= " group by MONTH(created_at)";
+
+
 
         return [
             'totalMonthly' => DB::select( $query ),

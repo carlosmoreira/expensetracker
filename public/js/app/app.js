@@ -165,19 +165,23 @@ expenseApp.controller('ExpensesController', function ($scope, $http) {
             $scope.totalMonthly = resp.data.totalMonthly;
             $scope.expenses = resp.data.expenses;
 
-            if(!mb){
-                mb = Morris.Bar({
-                    element: 'morris-bar-chart',
-                    data: resp.data.totalMonthly,
-                    xkey: 'Month',
-                    ykeys: ['Total'],
-                    labels: ['Total'],
-                    hideHover: 'auto',
-                    resize: true
-                });
-            }else{
-                mb.setData(resp.data.totalMonthly);
+            if(resp.data.totalMonthly.length > 0){
+                if(!mb){
+                    mb = Morris.Bar({
+                        element: 'morris-bar-chart',
+                        data: resp.data.totalMonthly,
+                        xkey: 'Month',
+                        ykeys: ['Total'],
+                        labels: ['Total'],
+                        hideHover: 'auto',
+                        resize: true
+                    });
+                }else{
+                    mb.setData(resp.data.totalMonthly);
+                }
             }
+
+
 
 
 
