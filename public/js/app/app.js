@@ -140,7 +140,7 @@ expenseApp.controller('ExpensesController', function ($scope, $http) {
     }
 
     $scope.updateActive = function(expense){
-        expense.active = (expense.active === 1) ? 0 : 1;
+        expense.active = (expense.active == 1) ? 0 : 1;
         $http.put('/expense/' + expense.id, expense).then(function (resp) {
             console.log(resp);
             loadData();
